@@ -1,0 +1,63 @@
+# 로또 분석
+nums = [[5, 7, 12, 20, 25, 26],
+        [30, 31, 34, 39, 41, 45],
+        [10, 16, 19, 27, 37, 38],
+        [4, 8, 22, 26, 32, 38],
+        [1, 9, 10, 13, 35, 44]]
+
+# 전체에서 n의 배수 개수 구하기
+n = [2, 3, 5, 7]
+print('전체에서 n의 배수 개수')
+for i in n:
+    cnt = 0
+    for j in nums:
+        for k in j:
+            if k % i == 0:
+                cnt += 1
+    print(i, '의 배수 : ', cnt)
+
+# 회차별 n의 배수 개수 구하기
+n = [2, 3, 5, 7]
+cnt = 0
+print('------------------')
+for j in range(len(nums)):
+    print(j+1, '회차 : ')
+    for i in n:
+        for k in nums[j]:
+            if k % i == 0:
+                cnt += 1
+        print(i, '의 배수 : ', cnt)
+        cnt = 0
+    print('------------------')
+
+# 회차별 홀수, 짝수 개수
+cnt = 0
+for j in range(len(nums)):
+    print(j+1, '회차 :')
+    for k in nums[j]:
+        if k % 2 == 0:
+            cnt += 1
+    print('짝수의 개수 : ', cnt)
+    print('홀수의 개수 : ', len(nums[j]) - cnt)
+    print('------------------')
+    cnt = 0
+
+# 회차별 average, min, max
+for i in range(len(nums)):
+    sum = 0 
+    min = 46
+    max = 0
+    for j in nums[i]:
+        sum += j
+        avg = sum / len(nums[i])
+
+        if j < min:
+            min = j
+        if j > max:
+            max = j
+        
+    print(i+1, '회차 : ')
+    print('평균: ', round(avg, 2))
+    print('최소: ', min)
+    print('최대: ', max)
+    print('------------------')
