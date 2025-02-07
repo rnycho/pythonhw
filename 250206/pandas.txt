@@ -1,0 +1,155 @@
+# 6-12 리스트로 시리즈 생성
+import pandas as pd
+
+a = pd.Series([1, 2, 3, 4])
+print(a)
+
+b = pd.Series([1, 2, 3, 4], index = ['a', 'b', 'c', 'd'])
+print(b)
+
+# 6-13 리스트로 데이터프레임 생성
+list1 = list([['한빛', '남자', '20', '180'],
+['한결', '남자', '21', '177'],
+['한라', '여자', '20', '160']])
+col_names = ['이름', '성별', '나이', '키']
+# pd.DataFrame(list1, columns = col_names).to_csv('test2.csv', index = False)
+pd.DataFrame(list1, columns = col_names).to_excel('test3.xlsx', index = False)
+
+# 6-14 딕셔너리로 데이터프레임 생성
+dict1 = {'이름':{0:'한빛', 1:'한결', 2:'한라'},
+         '성별':{0:'남자', 1:'남자', 2:'여자'},
+         '나이':{0:'20', 1:'21', 2:'20'},
+         '키':{0:'180', 1:'177', 2:'160'}}
+pd.DataFrame(dict1).to_csv('test4.csv', index = False)
+
+# 6-15 배열로 데이터프레임 생성
+import numpy as np
+
+#배열
+arr1 = np.array([['한빛','남자', '20', '180'],
+                ['한결','남자', '21', '177'],
+                ['한라','여자', '20', '160']])
+#열 이름 리스트
+col_names = ['이름','성별','나이','키']
+
+#데이터프레임 생성하기
+pd.DataFrame(arr1, columns = col_names)
+
+# 6-16 CSV 파일로 데이터프레임 생성
+list1 = list([['허준호','남자','30','183'],
+            ['이가원','여자','24','162'],
+            ['배규민','남자','23','179'],
+            ['고고림','남자','21','182'],
+            ['이새봄','여자','28','160'],
+            ['이보람','여자','26','163'],
+            ['이루리','여자','24','157'],
+            ['오다현','여자','24','172']])
+col_names = ['이름','성별','나이','키']
+df = pd.DataFrame(list1, columns = col_names)
+print(df)
+
+# 6-17 데이터프레임을 CSV 파일로 저장
+
+#디렉토리에 CSV 파일로 저장하기
+df.to_csv('./file.csv', header = True, index = False, encoding = 'utf-8')
+
+#CSV 파일 읽기
+df2 = pd.read_csv('./file.csv', sep = ',')
+print(df2)
+
+# 6-18 모든 열 이름 조회
+df.columns
+
+# 6-19 데이터프레임 값 개수와 빈도수 확인
+df.describe()
+
+# 6-20 데이터프레임의 처음 세 행 검색
+df.head(3)
+
+# 6-21 데이터프레임의 마지막 다섯 행 검색
+df.tail()
+
+# 6-22 인덱스 기준으로 정렬
+df.sort_index(axis = 0).head()
+
+# 6-23 열 기준으로 정렬
+df.sort_values(by = '나이', ascending = False)
+
+# 6-24 열 이름으로 데이터 조회
+df[['이름', '나이']]
+
+# 6-25 인덱스로 데이터 조회
+df.iloc[0:2, 1:2]
+
+# 6-26 조건식을 만족하는 데이터 조회(1)
+df[df['키'] > 180]
+
+# 6-27 조건식을 만족하는 데이터 조회(2)
+
+list1 = list([['허준호', '남자', 30, 183],
+            ['이가원', '여자', 24, 162],
+            ['배규민', '남자', 23, 179],
+            ['고고림', '남자', 21, 182],
+            ['이새봄', '여자', 28, 160],
+            ['이보람', '여자', 26, 163],
+            ['이루리', '여자', 24, 157],
+            ['오다현', '여자', 24, 172]])
+
+col_names = ['이름', '성별', '나이', '키']
+
+df = pd.DataFrame(list1, columns = col_names)
+
+df[df['키'] > 170]
+
+# 6-28 리스트 요소와 일치하는 데이터 조회
+df[df['나이'].isin([21, 23])]
+
+# 6-30 두 조건 중 하나 이상 만족
+df[(df['나이'] >= 28) | (df['성별'] == '남자')]
+
+# 6-31 특정 문자열을 포함
+df[df['이름'].str.contains('봄')]
+
+# 6-32 통계 확인
+df.describe()
+
+# 6-33 인덱스로 조회한 데이터를 수정
+df.loc[4, '키'] = df.loc[4, '키'] + 5
+print(df.loc[[4]])
+
+# 6-34 반복 연산자
+df.loc[1:3, '키'] = ['모름'] * 3
+print(df)
+
+# 6-35 인덳스 변경
+df.set_index('이름', inplace = True)
+df.head()
+
+# 6-36 열 생성
+df['보너스'] = df['나이'] * 10000
+df.head(3)
+
+# 6-37 열 삭제
+df.drop('보너스', axis = 1, inplace = True)
+df.head()
+
+# 6-38 인덱스 변경
+df.reset_index(inplace = True)
+df.head()
+
+# 6-39 데이터 치환
+rep_cond = {'성별': {'남자': 1, '여자': 0}}
+df2 = df.replace(rep_cond)
+df.head()
+
+# 6-40 데이터프레임의 값 연산
+#성별 평균 키
+mean_by_gender = df.groupby(by = ['성별'], as_index = False)['나이'].mean()
+mean_by_gender.rename(columns = {'나이':'평균 나이'}, inplace = True)
+
+#성별 키의 표준편차
+std_by_gender = df.groupby(by = ['성별'], as_index = False)['나이'].std( )
+std_by_gender.rename(columns = {'나이':'나이의 표준편차'}, inplace = True)
+
+new_df = pd.merge(mean_by_gender, std_by_gender)
+print(new_df)
