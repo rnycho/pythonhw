@@ -1,0 +1,36 @@
+import numpy as np
+
+data = np.loadtxt('./chocolate_rating.csv', delimiter = ',')
+
+print('차원:', data.ndim)
+print('모양:', data.shape)
+print('원소 수:', data.size)
+print(data)
+print()
+
+ratings_mean = data[:, 3].mean( )
+print('평균 평점 : ', ratings_mean)
+print()
+
+high_level = data[data[:, 3] >= 4]
+# print(high_level)
+
+# 평점 4 이상 제품 ID 출력
+high_id = high_level[:, 0].astype(np.int64)
+print('우수 초콜릿 수 (평점4이상):', high_id.size)
+print(high_id)
+print()
+
+# 평점 4 이상 제품의 카카오 함유량과 빈도수 출력
+high_kakao = high_level[:, 2]
+unique_values, value_counts = np.unique(high_kakao, return_counts = True)
+print('카카오 함유량 : ', unique_values)
+print('함유량별 빈도수 : ', value_counts)
+print()
+
+max_index = np.argmax(value_counts)
+
+# 0.7 함유량 제품 수가 45개로 가장 많음
+print('최빈 제품 index:', max_index)
+print('최빈 우수 카카오 함유량 : ', unique_values[max_index])
+print('우수 초콜릿', high_id.size, '가지 중', value_counts[max_index], '가지의 카카오 함유량이', unique_values[max_index] * 100, '% 입니다.')
