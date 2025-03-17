@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.rc('font', family='NanumBarunGothic')
+
+df = pd.read_csv('./ta_20250317143920.csv', encoding='cp949', skiprows=7)
+df['날짜'] = df['날짜'].str.replace('\t', '')
+
+df.info()  # 결측치 확인
+
+print(df.columns)
+
+plt.figure(figsize=(10, 8))
+plt.title('서울시 1988년 6월 기온 변화')
+plt.plot(range(1, len(df) + 1), df['최고기온(℃)'], label='최고기온(℃)', c='r')
+plt.plot(range(1, len(df) + 1), df['평균기온(℃)'], label='평균기온(℃)', c='y')
+plt.plot(range(1, len(df) + 1), df['최저기온(℃)'], label='최저기온(℃)', c='b')
+
+plt.xticks(range(1, len(df) + 1))
+plt.xlabel('일')
+plt.ylabel('기온')
+
+plt.legend()
+plt.savefig('서울기온.png')
+plt.show()
